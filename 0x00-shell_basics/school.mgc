@@ -1,3 +1,2 @@
 0 string SCHOOL School
 !:mime text/School
-echo "$(file -mime-type -m school.mgc*)"
