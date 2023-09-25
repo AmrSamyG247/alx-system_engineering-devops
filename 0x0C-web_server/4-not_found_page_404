@@ -1,28 +1,18 @@
 #!/usr/bin/env bash
 # 404 Not Found Page
 
-apt-get update && apt-get upgrade -y
-apt-get install -y nginx
+apt-get update -y && apt-get upgrade -y
+apt-get install nginx -y
+chown -R "$USER":"$USER" /var/www/html
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+line="\\\\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=cSFxOQG3tF8;\n\t}"
+sed -i "48i $line" /etc/nginx/sites-available/default
 
-touch /var/www/html/index.html /var/www/html/404.html
-echo "Hello World!" > /var/www/html/index.html
-echo "Ceci n'est pas une page" > /var/www/html/404.html
-
-printf %s "server {
-    listen 80;
-    listen [::]:80 default_server;
-    root   root   /var/www/html/;
-    index  index.html index.htm;
-
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=cSFxOQG3tF8;
-    }
-
-    error_page 404 /404.html;
-    location /404 {
-        root /var/www/html/;
-        internal;
-    }
-}" > /etc/nginx/sites-available/default
+mkdir -p /var/www/default
+echo "Ceci n'est pas une page" > /var/www/default/404.html
+line1="\\\tlocation = /404.html {\n\t\t root /var/www/default;\n\t}"
+sed -i "29i $line1" /etc/nginx/sites-available/default
+line2="\\\terror_page 404 /404.html;"
+sed -i "32i $line2" /etc/nginx/sites-available/default
 
 service nginx restart
