@@ -4,7 +4,7 @@
 #+    Distributes requests using a round-robin algorithm.
 
 apt-get update
-apt-get install -y haproxy
+apt-get install -y haproxy=1.6
 
 printf %s "
 frontend hbnb-lb_front
