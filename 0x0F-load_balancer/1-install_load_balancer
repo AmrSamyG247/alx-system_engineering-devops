@@ -4,7 +4,7 @@
 #+    Distributes requests using a round-robin algorithm.
 
 apt-get update
-apt-get install -y haproxy=1.6
+apt-get install -y haproxy
 
 printf %s "
 frontend hbnb-lb_front
@@ -13,8 +13,8 @@ frontend hbnb-lb_front
         default_backend hbnb-lb_back
 backend hbnb-lb_back
         balance roundrobin
-        server 1723-web-01 100.26.181.86:80 check
-        server 1723-web-02 34.238.192.13:80 check
+        server 389626-web-01 100.26.57.237:80 check
+        server 389626-web-02 52.23.178.237:80 check
 " >> /etc/haproxy/haproxy.cfg
 
 echo "ENABLED=1" >> /etc/default/haproxy
