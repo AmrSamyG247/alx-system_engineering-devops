@@ -7,8 +7,6 @@ global
         user haproxy
         group haproxy
         daemon
-        maxconn 2048
-        tune.ssl.default-dh-param 2048
 
         # Default SSL material locations
         ca-base /etc/ssl/certs
@@ -18,6 +16,7 @@ global
         ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
         ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
         ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+        ssl-dh-param-file /etc/haproxy/amrsamy.tech.pem
 
 defaults
         log     global
@@ -27,8 +26,6 @@ defaults
         timeout connect 5000
         timeout client  50000
         timeout server  50000
-        option forwardfor
-        option http-server-close
         errorfile 400 /etc/haproxy/errors/400.http
         errorfile 403 /etc/haproxy/errors/403.http
         errorfile 408 /etc/haproxy/errors/408.http
@@ -39,76 +36,11 @@ defaults
 
 frontend hbnb-lb_front
         bind *:80
-        mode http
-        default_backend hbnb-lb_back
-backend hbnb-lb_back
-        balance roundrobin
-        server 1723-web-01 100.26.181.86:80 check
-        server 1723-web-02 34.238.192.13:80 check
-
-frontend hbnb-lb_front
-        bind *:80
-        mode http
-        default_backend hbnb-lb_back
-backend hbnb-lb_back
-        balance roundrobin
-        server 1723-web-01 100.26.181.86:80 check
-        server 1723-web-02 34.238.192.13:80 check
-
-listen stats
-    bind :8800
-    stats enable
-    stats uri /
-    stats hide-version
-    stats auth rosehosting:m0d1fyth15
-    default_backend apache_webservers
-
-listen appname 0.0.0.0:80
-        mode http
-        balance roundrobin
-        option httpclose
-        option forwardfor
-        server 389626-web-01 100.26.57.237 check
-        server 389626-web-02 52.23.178.237 check
-
-
-listen appname 0.0.0.0:80
-        mode http
-        balance roundrobin
-        option httpclose
-        option forwardfor
-        server 389626-web-01 100.26.57.237 check
-        server 389626-web-02 52.23.178.237 check
-
-
-listen appname 0.0.0.0:80
-        mode http
-        balance roundrobin
-        option httpclose
-        option forwardfor
-        server 389626-web-01 100.26.57.237 check
-        server 389626-web-02 52.23.178.237 check
-
-
-frontend hbnb-lb_front
-        bind *:80
+        bind *:443 ssl crt /etc/haproxy/certs/www.amrsamy.tech.pem
+        redirect scheme https if !{ ssl_fc }
         mode http
         default_backend hbnb-lb_back
 backend hbnb-lb_back
         balance roundrobin
         server 389626-web-01 100.26.57.237:80 check
         server 389626-web-02 52.23.178.237:80 check
-
-frontend hbnb-lb_front
-        bind *:80
-        mode http
-        default_backend hbnb-lb_back
-backend hbnb-lb_back
-        balance roundrobin
-        server 389626-web-01 100.26.57.237:80 check
-        server 389626-web-02 52.23.178.237:80 check
-
-frontend haproxy-main
-    bind *:80
-    option forwardfor  
-    default_backend apache_webservers
