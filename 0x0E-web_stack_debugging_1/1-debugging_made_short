@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# reconfigures nginx to run on all ipv4's port 80
-
+# Configures an Nginx server to listen on port 80.
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-service nginx restart
-rm /run/nginx.pid
+service nginx start
+kill "$(pgrep 'nginx' | head -1)"
