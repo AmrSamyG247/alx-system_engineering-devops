@@ -1,4 +1,4 @@
-0x14-mysql ALX SE program tasks By Amr Samy
+##0x14-mysql ALX SE program tasks By Amr Samy
 
 ## How I go with tasks ?
 
@@ -46,7 +46,7 @@ Password:	/* Type root password
 
 mysql> CREATE USER 'holberton_user'@'localhost' IDENTIFIED BY 'projectcorrection280hbtn';
 
-mysql> GRANT GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';
+mysql> GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';
 
 mysql> FLUSH PRIVILEGES;
 ```
@@ -82,6 +82,9 @@ mysql> select * from nexus6;
 +-------+-------+
 2 rows in set (0.00 sec)
 
+-- Grant user select access on DB
+mysql> GRANT ALL PRIVILEGES ON *.*  TO 'holberton_user'@'localhost';
+Query OK, 0 rows affected (0.04 sec)
 
 ### Setting Up MySQL Replication
 
